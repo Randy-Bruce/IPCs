@@ -1,0 +1,98 @@
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <string.h>
+#include <pthread.h>
+#include <sys/syscall.h>
+
+typedef struct {
+    int v1;
+    int v2;
+    int v3;
+} laStruct;
+
+//Zone de partage
+laStruct partage;
+
+void *thread1(void *arg) {
+    printf("dans le thread1 mon tid est %ld\n", syscall(SYS_gettid));
+    printf("mise a jour de la v1 avec la valeur 10\n");
+    partage.v1 = 10;
+    pthread_exit((void *) "merci pour le temps CPU");
+    pthread_exit(NULL);
+}
+
+void *thread2(void *arg) {
+    printf("dans le thread2 mon tid est %ld \n", syscall(SYS_gettid));
+    printf("mise a jour de la v2 avec la valeur 20\n");
+    partage.v2 = 20;
+    pthread_exit((void *) "merci pour le temps CPU");
+    pthread_exit(NULL);
+}
+
+void *thread3(void *arg) {
+    printf("dans le thread3 mon tid est %ld\n", syscall(SYS_gettid));
+    printf("mise a jour de la v3 avec la valeur 30\n");
+    partage.v3 = 30;
+    pthread_exit((void *) "merci pour le temps CPU");
+    pthread_exit(NULL);
+}
+
+void affichePartage() {
+    printf("__________________\n");
+    printf("v1 = %d\n", partage.v1);
+    printf("v2 = %d\n", partage.v2);
+    printf("v3 = %d\n", partage.v3);
+}
+
+int main(int argc, char** argv) {
+    pthread_t t1, t2, t3;
+    int ret;
+    void *thread_result;
+    //Creation du thread1
+    ret = pthread_create(&t1, NULL, thread1, NULL);
+    if (ret != 0) {
+        perror("Thread creation failed");
+        exit(EXIT_FAILURE);
+    }
+    affichePartage();
+    //Creation du thread1
+    ret = pthread_create(&t2, NULL, thread2, NULL);
+    if (ret != 0) {
+        perror("Thread creation failed");
+        exit(EXIT_FAILURE);
+    }
+    affichePartage();
+    //Creation du thread1
+    ret = pthread_create(&t3, NULL, thread3, NULL);
+    if (ret != 0) {
+        perror("Thread creation failed");
+        exit(EXIT_FAILURE);
+    }
+    affichePartage();
+
+    //Attendre fin du thread 1
+    ret = pthread_join(t1, &thread_result);
+    if (ret != 0) {
+        perror("Thread join a foir... echoué");
+        exit(EXIT_FAILURE);
+    }
+    //Attendre fin du thread 2
+    ret = pthread_join(t2, &thread_result);
+    if (ret != 0) {
+        perror("Thread join a foir... echoué");
+        exit(EXIT_FAILURE);
+    }
+    //Attendre fin du thread 3
+    ret = pthread_join(t3, &thread_result);
+    if (ret != 0) {
+        perror("Thread join a foir... echoué");
+        exit(EXIT_FAILURE);
+    }
+    affichePartage();
+
+
+    return (EXIT_SUCCESS);
+}
+
+
