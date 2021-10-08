@@ -26,10 +26,10 @@ int main(int argc, char** argv) {
         printf("pb socket : %s\n", strerror(errno));
         exit(errno);
     }
-    // init de la struture pour communiquer avecle serveur
+    // init de la struture pour communiquer avec le serveur
     infosServeur.sin_family = AF_INET;
     infosServeur.sin_port = htons(2222); // port dans ordre reseau // "htons" -> hote vers reseau
-    infosServeur.sin_addr.s_addr = inet_addr("172.18.58.150");
+    infosServeur.sin_addr.s_addr = inet_addr("172.18.58.102");
     // envoyer l'entier au serveur 
     valEnvoyee = 7;
     retour = sendto(sock, &valEnvoyee, sizeof (valEnvoyee), 0, (struct sockaddr *) &infosServeur, sizeof (infosServeur));
@@ -44,7 +44,7 @@ int main(int argc, char** argv) {
         exit(errno);
     }
     // affiche l'entier 
-    printf(" reponse du serveur = %d\n", valRecue);
+    printf("reponse du serveur = %d\n", valRecue);
 
     return (EXIT_SUCCESS);
 }
