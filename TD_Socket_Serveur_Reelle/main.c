@@ -33,6 +33,10 @@ int main(int argc, char** argv) {
 
     // Fonction bind
     retour = bind(sock, (struct sockaddr*) &adresseServeur, sizeof (adresseServeur));
+    if (retour == -1) {
+            printf("pb bind : %s\n", strerror(errno));
+            exit(errno);
+        }
     while (1) {
         // recevoir l'entier en provenance du client 
         retour = recvfrom(sock, &valRecue, sizeof (valRecue), 0, (struct sockaddr *) &adresseServeur, &taille);
