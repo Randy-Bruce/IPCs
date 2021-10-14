@@ -41,8 +41,8 @@ int main(int argc, char** argv) {
     }
     // init de la struture pour communiquer avec le serveur
     infosServeur.sin_family = AF_INET;
-    infosServeur.sin_port = htons(7777); // port dans ordre reseau // "htons" -> hote vers reseau
-    infosServeur.sin_addr.s_addr = inet_addr("172.18.58.150");
+    infosServeur.sin_port = htons(2222); // port dans ordre reseau // "htons" -> hote vers reseau
+    infosServeur.sin_addr.s_addr = inet_addr("172.18.58.102");
     // Fonction Connect
     taille = sizeof (infosServeur);
     retour = connect(sock, (struct sockaddr *)&infosServeur, taille);
