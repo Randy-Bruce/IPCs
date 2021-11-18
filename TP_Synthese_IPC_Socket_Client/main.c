@@ -36,7 +36,7 @@ int main(int argc, char** argv) {
     char buffer[TAILLE_MAX_MSG];
 
     message msg;
-    msg.pseudo;
+    strcpy(msg.pseudo, "Randy");
     msg.texteMessage;
     /* strcpy(msg.pseudo, "Randy");
      strcpy(msg.texteMessage, "Bonjour le monde");*/
@@ -61,8 +61,6 @@ int main(int argc, char** argv) {
     pid = fork();
     if (pid == 0) {//boucle d'envoie
         do {
-            printf("votre pseudo : ");
-            gets(msg.pseudo);
             printf("votre message : ");
             gets(msg.texteMessage);
             retour = write(sock, &msg, sizeof (msg));
